@@ -17,10 +17,15 @@ def main():
     os.chdir(common.basedir + '/platform')
   else:
     os.chdir(common.basedir + '/platform')
+    if ('windows' == build_utils.system) and ('arm64' == build_utils.arch):
+      args.skia_release = 'm143-a23b0f33a0'
+      build_url = 'https://github.com/chirontt/SkiaBuild/releases/download/'
+    else:
+      build_url = 'https://github.com/HumbleUI/SkiaBuild/releases/download/'
     skia_dir = "Skia-" + args.skia_release + "-" + build_utils.system + "-" + build_type + '-' + build_utils.arch
     if not os.path.exists(skia_dir):
       zip = skia_dir + '.zip'
-      build_utils.fetch('https://github.com/HumbleUI/SkiaBuild/releases/download/' + args.skia_release + '/' + zip, zip)
+      build_utils.fetch(build_url + args.skia_release + '/' + zip, zip)
       with zipfile.ZipFile(zip, 'r') as f:
         print("Extracting", zip, flush=True)
         f.extractall(skia_dir)
